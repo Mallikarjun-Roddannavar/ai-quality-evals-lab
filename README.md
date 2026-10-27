@@ -1,1 +1,1 @@
-# ai-evalutation-lab
+# ai-quality-evals-lab
