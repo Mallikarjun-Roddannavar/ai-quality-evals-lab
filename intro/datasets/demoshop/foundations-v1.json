@@ -1,0 +1,359 @@
+{
+  "dataset_id": "demoshop-foundations",
+  "version": "1.0.0",
+  "provenance": "Original fictional DemoShop teaching fixtures. Candidate outputs, matching goldens and task_correct labels are manually authored simulations; no model calls or independent human annotation.",
+  "application": "DemoShop",
+  "application_stage": "authored_fixtures",
+  "fixture_version": "1.0.0",
+  "shop_snapshot": {
+    "as_of_utc": "2026-10-28T00:00:00Z",
+    "currency": "INR",
+    "products": [
+      {
+        "product_id": "SKU-NOTEBOOK",
+        "name": "Notebook",
+        "price_inr": 100,
+        "stock": 10
+      },
+      {
+        "product_id": "SKU-BOTTLE",
+        "name": "Water bottle",
+        "price_inr": 300,
+        "stock": 0
+      },
+      {
+        "product_id": "SKU-BACKPACK",
+        "name": "Backpack",
+        "price_inr": 800,
+        "stock": 3
+      }
+    ],
+    "customer_ids": [
+      "C001",
+      "C002"
+    ],
+    "orders": [
+      {
+        "order_id": "DS-1001",
+        "customer_id": "C001",
+        "product_id": "SKU-NOTEBOOK",
+        "quantity": 1,
+        "status": "awaiting shipment"
+      },
+      {
+        "order_id": "DS-1002",
+        "customer_id": "C001",
+        "product_id": "SKU-BACKPACK",
+        "quantity": 1,
+        "status": "shipped"
+      },
+      {
+        "order_id": "DS-1003",
+        "customer_id": "C002",
+        "product_id": "SKU-NOTEBOOK",
+        "quantity": 2,
+        "status": "delivered",
+        "delivered_at_utc": "2026-10-20T00:00:00Z"
+      }
+    ],
+    "policies": {
+      "return_window_days": 14,
+      "return_rule": "Returns allowed from delivery through 14 elapsed days inclusive, using UTC and the fixed snapshot clock; negative elapsed time is ineligible.",
+      "cancellation_rule": "Cancellation is allowed only before shipment.",
+      "authorization_rule": "Customers may access and change only their own orders.",
+      "identifier_rule": "Product and order identifiers are case-sensitive.",
+      "clarification_rule": "Ask for missing order identity before answering an order-specific question.",
+      "abstention_rule": "Do not invent policy or catalog information absent from the snapshot."
+    }
+  },
+  "cases": [
+    {
+      "case_id": "ds01",
+      "instruction": "What is the notebook price? Answer INR followed by its price.",
+      "reference": "INR 100",
+      "candidate": "INR 100",
+      "expected": {
+        "exact": 1,
+        "normalized": 1
+      },
+      "task_correct": true,
+      "note": "Catalog notebook price is INR 100."
+    },
+    {
+      "case_id": "ds02",
+      "instruction": "What is the backpack price? Answer INR followed by its price.",
+      "reference": "INR 800",
+      "candidate": "INR 800",
+      "expected": {
+        "exact": 1,
+        "normalized": 1
+      },
+      "task_correct": true,
+      "note": "Catalog backpack price is INR 800."
+    },
+    {
+      "case_id": "ds03",
+      "instruction": "Is the water bottle available? Answer in stock or out of stock.",
+      "reference": "out of stock",
+      "candidate": "out of stock",
+      "expected": {
+        "exact": 1,
+        "normalized": 1
+      },
+      "task_correct": true,
+      "note": "Water bottle stock is zero."
+    },
+    {
+      "case_id": "ds04",
+      "instruction": "How many notebooks are in stock? Answer with digits.",
+      "reference": "10",
+      "candidate": "10",
+      "expected": {
+        "exact": 1,
+        "normalized": 1
+      },
+      "task_correct": true,
+      "note": "Notebook stock is ten."
+    },
+    {
+      "case_id": "ds05",
+      "instruction": "How long after delivery are returns allowed? Answer number and days.",
+      "reference": "14 days",
+      "candidate": "14 days",
+      "expected": {
+        "exact": 1,
+        "normalized": 1
+      },
+      "task_correct": true,
+      "note": "The fictional return window is fourteen days."
+    },
+    {
+      "case_id": "ds06",
+      "instruction": "When is cancellation allowed? Answer before shipment.",
+      "reference": "before shipment",
+      "candidate": "before shipment",
+      "expected": {
+        "exact": 1,
+        "normalized": 1
+      },
+      "task_correct": true,
+      "note": "Cancellation is allowed only before shipment."
+    },
+    {
+      "case_id": "ds07",
+      "instruction": "For customer C001, give the status of their order DS-1002.",
+      "reference": "shipped",
+      "candidate": "shipped",
+      "expected": {
+        "exact": 1,
+        "normalized": 1
+      },
+      "task_correct": true,
+      "note": "DS-1002 belongs to C001 and is shipped."
+    },
+    {
+      "case_id": "ds08",
+      "instruction": "Can C001 cancel shipped order DS-1002? Answer allowed or not allowed.",
+      "reference": "not allowed",
+      "candidate": "not allowed",
+      "expected": {
+        "exact": 1,
+        "normalized": 1
+      },
+      "task_correct": true,
+      "note": "A shipped order cannot be cancelled."
+    },
+    {
+      "case_id": "ds09",
+      "instruction": "Give the notebook price as INR and amount; letter case is irrelevant.",
+      "reference": "INR 100",
+      "candidate": "inr 100",
+      "expected": {
+        "exact": 0,
+        "normalized": 1
+      },
+      "task_correct": true,
+      "note": "Permitted currency-letter case variation."
+    },
+    {
+      "case_id": "ds10",
+      "instruction": "Give water bottle availability; surrounding whitespace is irrelevant.",
+      "reference": "out of stock",
+      "candidate": " out of stock ",
+      "expected": {
+        "exact": 0,
+        "normalized": 1
+      },
+      "task_correct": true,
+      "note": "Whitespace does not change the out-of-stock answer."
+    },
+    {
+      "case_id": "ds11",
+      "instruction": "Give the return window as number and days; whitespace width is irrelevant.",
+      "reference": "14 days",
+      "candidate": "14   days",
+      "expected": {
+        "exact": 0,
+        "normalized": 1
+      },
+      "task_correct": true,
+      "note": "Repeated spaces do not change the fourteen-day policy."
+    },
+    {
+      "case_id": "ds12",
+      "instruction": "Describe unshipped order DS-1001 as awaiting shipment; any whitespace separator is allowed.",
+      "reference": "awaiting shipment",
+      "candidate": "awaiting\tshipment",
+      "expected": {
+        "exact": 0,
+        "normalized": 1
+      },
+      "task_correct": true,
+      "note": "The tab separates the requested words; order status is awaiting shipment."
+    },
+    {
+      "case_id": "ds13",
+      "instruction": "When is cancellation allowed? Any whitespace separator is allowed.",
+      "reference": "before shipment",
+      "candidate": "before\nshipment",
+      "expected": {
+        "exact": 0,
+        "normalized": 1
+      },
+      "task_correct": true,
+      "note": "The newline does not change the cancellation rule."
+    },
+    {
+      "case_id": "ds14",
+      "instruction": "Return the case-sensitive order identifier DS-1001 exactly.",
+      "reference": "DS-1001",
+      "candidate": "ds-1001",
+      "expected": {
+        "exact": 0,
+        "normalized": 1
+      },
+      "task_correct": false,
+      "note": "Normalization falsely accepts a different case-sensitive order identifier."
+    },
+    {
+      "case_id": "ds15",
+      "instruction": "For machine consumption return shipped order DS-1002 status exactly as the lowercase token shipped.",
+      "reference": "shipped",
+      "candidate": "SHIPPED",
+      "expected": {
+        "exact": 0,
+        "normalized": 1
+      },
+      "task_correct": false,
+      "note": "Normalization falsely accepts the wrong case for the required exact status token."
+    },
+    {
+      "case_id": "ds16",
+      "instruction": "What is the notebook price? Equivalent currency wording is acceptable.",
+      "reference": "INR 100",
+      "candidate": "100 rupees",
+      "expected": {
+        "exact": 0,
+        "normalized": 0
+      },
+      "task_correct": true,
+      "note": "The amount and currency are correct; string rules do not interpret equivalent wording."
+    },
+    {
+      "case_id": "ds17",
+      "instruction": "Is the water bottle available? Unavailable and out of stock are both acceptable.",
+      "reference": "out of stock",
+      "candidate": "unavailable",
+      "expected": {
+        "exact": 0,
+        "normalized": 0
+      },
+      "task_correct": true,
+      "note": "A permitted availability synonym is falsely rejected."
+    },
+    {
+      "case_id": "ds18",
+      "instruction": "Explain the return window after delivery; a full sentence is acceptable.",
+      "reference": "14 days",
+      "candidate": "You can return it within 14 days of delivery.",
+      "expected": {
+        "exact": 0,
+        "normalized": 0
+      },
+      "task_correct": true,
+      "note": "A correct policy sentence differs from the short reference."
+    },
+    {
+      "case_id": "ds19",
+      "instruction": "Where is my order? No order identifier has been provided; ask for it.",
+      "reference": "Please provide your order ID.",
+      "candidate": "Which order do you mean?",
+      "expected": {
+        "exact": 0,
+        "normalized": 0
+      },
+      "task_correct": true,
+      "note": "The candidate appropriately requests the missing order identity using different wording."
+    },
+    {
+      "case_id": "ds20",
+      "instruction": "Give the notebook price as INR and amount.",
+      "reference": "INR 100",
+      "candidate": "INR 150",
+      "expected": {
+        "exact": 0,
+        "normalized": 0
+      },
+      "task_correct": false,
+      "note": "The candidate invents a higher notebook price."
+    },
+    {
+      "case_id": "ds21",
+      "instruction": "Is the water bottle in stock?",
+      "reference": "out of stock",
+      "candidate": "in stock",
+      "expected": {
+        "exact": 0,
+        "normalized": 0
+      },
+      "task_correct": false,
+      "note": "The candidate contradicts zero inventory."
+    },
+    {
+      "case_id": "ds22",
+      "instruction": "How long after delivery are returns allowed?",
+      "reference": "14 days",
+      "candidate": "30 days",
+      "expected": {
+        "exact": 0,
+        "normalized": 0
+      },
+      "task_correct": false,
+      "note": "The candidate invents a thirty-day return window."
+    },
+    {
+      "case_id": "ds23",
+      "instruction": "Can C001 cancel shipped order DS-1002? Answer allowed or not allowed.",
+      "reference": "not allowed",
+      "candidate": "allowed",
+      "expected": {
+        "exact": 0,
+        "normalized": 0
+      },
+      "task_correct": false,
+      "note": "The candidate reverses the cancellation rule."
+    },
+    {
+      "case_id": "ds24",
+      "instruction": "For customer C001 give the status of their order DS-1002.",
+      "reference": "shipped",
+      "candidate": "",
+      "expected": {
+        "exact": 0,
+        "normalized": 0
+      },
+      "task_correct": false,
+      "note": "Missing answer for an order with known status."
+    }
+  ]
+}

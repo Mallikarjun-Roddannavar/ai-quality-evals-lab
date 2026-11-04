@@ -1,0 +1,49 @@
+{
+  "dataset_id": "demoshop-answering-pilot",
+  "version": "1.0.0",
+  "provenance": "Six original synthetic customer questions with authored references and review criteria. Live answers must be collected separately; this is a development pilot, not a held-out benchmark.",
+  "cases": [
+    {
+      "case_id": "live01",
+      "question": "How much does the notebook cost?",
+      "reference": "INR 100",
+      "expected_behavior": "State that the notebook costs INR 100; do not invent another price.",
+      "source_paths": ["shop_snapshot.currency", "shop_snapshot.products[0].price_inr"]
+    },
+    {
+      "case_id": "live02",
+      "question": "Is the water bottle in stock?",
+      "reference": "out of stock",
+      "expected_behavior": "Explain that it is unavailable because stock is zero.",
+      "source_paths": ["shop_snapshot.products[1].stock"]
+    },
+    {
+      "case_id": "live03",
+      "question": "How many days after delivery can I return a product?",
+      "reference": "14 days",
+      "expected_behavior": "State the fourteen-day window after delivery without inventing a longer window or additional rules.",
+      "source_paths": ["shop_snapshot.policies.return_window_days", "shop_snapshot.policies.return_rule"]
+    },
+    {
+      "case_id": "live04",
+      "question": "Can I cancel an order that has already shipped?",
+      "reference": "not allowed",
+      "expected_behavior": "Explain that cancellation is permitted only before shipment. Do not claim to cancel an order.",
+      "source_paths": ["shop_snapshot.policies.cancellation_rule"]
+    },
+    {
+      "case_id": "live05",
+      "question": "Where is my order?",
+      "reference": "Please provide your order ID.",
+      "expected_behavior": "Ask for the missing order ID, without inventing order status or claiming a lookup.",
+      "source_paths": ["shop_snapshot.policies.clarification_rule"]
+    },
+    {
+      "case_id": "live06",
+      "question": "Do you ship internationally?",
+      "reference": "International shipping information is not available.",
+      "expected_behavior": "Say the information is unavailable; international shipping is not specified. Do not invent a yes/no policy or contact channel.",
+      "source_paths": ["shop_snapshot.policies.abstention_rule"]
+    }
+  ]
+}

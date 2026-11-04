@@ -1,0 +1,21 @@
+{
+  "dataset_id": "demoshop-catalog-question-rules",
+  "version": "1.0.0",
+  "rules": [
+    {
+      "question": "How much does the notebook cost?",
+      "product_id": "SKU-NOTEBOOK",
+      "check": "price"
+    },
+    {
+      "question": "Is the water bottle in stock?",
+      "product_id": "SKU-BOTTLE",
+      "check": "stock"
+    },
+    {
+      "question": "How much is the backpack?",
+      "product_id": "SKU-BACKPACK",
+      "check": "price"
+    }
+  ]
+}

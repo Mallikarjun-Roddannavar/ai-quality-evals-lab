@@ -1,0 +1,168 @@
+{
+  "dataset_id": "demoshop-catalog-rule-probes",
+  "version": "1.0.0",
+  "provenance": "Manually authored rule-validation probes; expected verdicts independently specified. These are not live model outputs or a held-out benchmark.",
+  "fixture": "datasets/demoshop/foundations-v1.json",
+  "cases": [
+    {
+      "case_id": "p01",
+      "product_id": "SKU-BACKPACK",
+      "check": "price",
+      "answer": "INR 800",
+      "expected_status": "pass",
+      "note": "A bare currency amount matches the catalog."
+    },
+    {
+      "case_id": "p02",
+      "product_id": "SKU-BACKPACK",
+      "check": "price",
+      "answer": "The backpack costs 800 INR.",
+      "expected_status": "pass",
+      "note": "A supported full sentence preserves the fact."
+    },
+    {
+      "case_id": "p03",
+      "product_id": "SKU-BACKPACK",
+      "check": "price",
+      "answer": "800 rupees",
+      "expected_status": "pass",
+      "note": "Supported equivalent currency wording."
+    },
+    {
+      "case_id": "p04",
+      "product_id": "SKU-BACKPACK",
+      "check": "price",
+      "answer": "INR 800.00",
+      "expected_status": "pass",
+      "note": "Decimal representation has the same value."
+    },
+    {
+      "case_id": "p05",
+      "product_id": "SKU-BACKPACK",
+      "check": "price",
+      "answer": "INR 900",
+      "expected_status": "fail",
+      "note": "Wrong amount."
+    },
+    {
+      "case_id": "p06",
+      "product_id": "SKU-BACKPACK",
+      "check": "price",
+      "answer": "",
+      "expected_status": "fail",
+      "note": "Missing answer."
+    },
+    {
+      "case_id": "p07",
+      "product_id": "SKU-BACKPACK",
+      "check": "price",
+      "answer": "The backpack does not cost 800 INR.",
+      "expected_status": "review",
+      "note": "A correct numeric substring inside negation must not pass."
+    },
+    {
+      "case_id": "p08",
+      "product_id": "SKU-BACKPACK",
+      "check": "price",
+      "answer": "The backpack costs 800 INR, or maybe 900 INR.",
+      "expected_status": "review",
+      "note": "Multiple contradictory amounts are outside the bounded grammar."
+    },
+    {
+      "case_id": "p09",
+      "product_id": "SKU-BACKPACK",
+      "check": "price",
+      "answer": "800 USD",
+      "expected_status": "review",
+      "note": "Unsupported currency must not silently become INR."
+    },
+    {
+      "case_id": "p10",
+      "product_id": "SKU-BACKPACK",
+      "check": "price",
+      "answer": "The notebook costs 800 INR.",
+      "expected_status": "review",
+      "note": "A sentence about a different product must not pass."
+    },
+    {
+      "case_id": "s01",
+      "product_id": "SKU-BOTTLE",
+      "check": "stock",
+      "answer": "out of stock",
+      "expected_status": "pass",
+      "note": "Zero stock implies unavailable."
+    },
+    {
+      "case_id": "s02",
+      "product_id": "SKU-BOTTLE",
+      "check": "stock",
+      "answer": "No, the water bottle is out of stock.",
+      "expected_status": "pass",
+      "note": "Supported full negative availability sentence."
+    },
+    {
+      "case_id": "s03",
+      "product_id": "SKU-BOTTLE",
+      "check": "stock",
+      "answer": "in stock",
+      "expected_status": "fail",
+      "note": "Contradicts zero inventory."
+    },
+    {
+      "case_id": "s04",
+      "product_id": "SKU-NOTEBOOK",
+      "check": "stock",
+      "answer": "Yes, the notebook is in stock.",
+      "expected_status": "pass",
+      "note": "Notebook inventory is positive."
+    },
+    {
+      "case_id": "s05",
+      "product_id": "SKU-BOTTLE",
+      "check": "stock",
+      "answer": "not in stock",
+      "expected_status": "pass",
+      "note": "Explicit supported negative phrase."
+    },
+    {
+      "case_id": "s06",
+      "product_id": "SKU-BOTTLE",
+      "check": "stock",
+      "answer": "Yes, the water bottle is out of stock.",
+      "expected_status": "fail",
+      "note": "The yes prefix contradicts the rest of the recognized answer."
+    },
+    {
+      "case_id": "s07",
+      "product_id": "SKU-BOTTLE",
+      "check": "stock",
+      "answer": "The water bottle is out of stock and arrives tomorrow.",
+      "expected_status": "review",
+      "note": "An extra unverified delivery claim must not be accepted."
+    },
+    {
+      "case_id": "s08",
+      "product_id": "SKU-BOTTLE",
+      "check": "stock",
+      "answer": "The water bottle is not out of stock.",
+      "expected_status": "review",
+      "note": "Negation outside the recognized grammar needs review."
+    },
+    {
+      "case_id": "s09",
+      "product_id": "SKU-BOTTLE",
+      "check": "stock",
+      "answer": "unavailable",
+      "expected_status": "pass",
+      "note": "Supported availability synonym."
+    },
+    {
+      "case_id": "s10",
+      "product_id": "SKU-BOTTLE",
+      "check": "stock",
+      "answer": "Maybe.",
+      "expected_status": "review",
+      "note": "No unambiguous inventory assertion."
+    }
+  ]
+}
