@@ -4,6 +4,7 @@ import json
 import socket
 import sys
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 from streamlit.testing.v1 import AppTest
@@ -220,6 +221,38 @@ def test_tool_authorization_state_reset_and_idempotency():
     assert Shop().get_order("DS-1001")["status"] == "awaiting shipment"
 
 
+def test_skill_pass_requires_instructions_in_model_prompt(fake_models, monkeypatch):
+    monkeypatch.setattr(
+        demos,
+        "run_agent",
+        lambda runtime, skill: {"final_order": {"status": "cancelled"}},
+    )
+    result = demos.run_demo("10")
+    assert result.checks[0]["skill_body_in_prompt"] is False
+    assert result.status == "fail"
+
+
+def test_security_output_shows_unexpected_access_without_crashing():
+    displayed = []
+    st = SimpleNamespace(
+        subheader=lambda *args: None,
+        write=lambda *args: displayed.append(args),
+    )
+    result = SimpleNamespace(
+        topic_id="13",
+        status="fail",
+        output={
+            "cross_customer_read": {"order_id": "DS-1003"},
+            "cross_customer_cancel": {"status": "cancelled"},
+            "legitimate_read": {"error": "denied"},
+            "state_unchanged": False,
+        },
+    )
+    lab.show_output(st, result)
+    assert ("Your own order accessible:", False) in displayed
+    assert ("Order state unchanged:", False) in displayed
+
+
 def test_openrouter_runtime_uses_selected_provider_without_ollama(
     fake_models, monkeypatch
 ):
@@ -355,6 +388,22 @@ def test_all_topics_render_their_results_in_browser(fake_models):
         assert not app.exception, (topic_id, app.exception)
         assert any(item.value == "Shop facts" for item in app.subheader)
         assert any(item.value == "What happened" for item in app.subheader)
+        assert any("Input / task:" in item.value for item in app.markdown)
+        assert any("Expected behavior:" in item.value for item in app.markdown)
+        assert any("Check:" in item.value for item in app.markdown)
+
+
+def test_execution_error_explains_that_no_check_was_completed(fake_models, monkeypatch):
+    def fail_call(*args, **kwargs):
+        raise RuntimeError("Model unavailable")
+
+    monkeypatch.setattr(ollama, "chat", fail_call)
+    app = AppTest.from_file(str(Path(lab.__file__)), default_timeout=30).run()
+    app.button[0].click().run()
+    assert not app.exception
+    assert any("Model unavailable" in item.value for item in app.markdown)
+    assert any("INR 800" in item.value for item in app.markdown)
+    assert any("no pass or fail was determined" in item.value for item in app.caption)
 
 
 def test_human_form_requires_input_and_saves_without_new_inference(fake_models):

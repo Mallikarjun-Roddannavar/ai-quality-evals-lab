@@ -1,5 +1,4 @@
 # Credentials and local settings
-.env
 .env.*
 !.env.example
 *.pem

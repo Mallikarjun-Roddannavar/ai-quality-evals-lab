@@ -279,9 +279,7 @@ def run_demo(
             result["provenance"]["judge_is_subject_model"] = judge_model == model
         elif topic_id == "05":
             if model == secondary_model:
-                raise ValueError(
-                    "Select two different installed model tags for this comparison"
-                )
+                raise ValueError("Select two different model IDs for this comparison")
             questions = [
                 ("How much does the notebook cost?", "SKU-NOTEBOOK", "price"),
                 ("Is the water bottle in stock?", "SKU-BOTTLE", "stock"),
@@ -308,6 +306,7 @@ def run_demo(
                     rows.append(
                         {
                             "model": selected,
+                            "reported_model": runtime.events[-1]["completion"]["model"],
                             "question": question,
                             "answer": answer,
                             "check": catalog_check(answer, product, kind)
@@ -327,7 +326,8 @@ def run_demo(
                 ),
                 limitation=(
                     "Six development responses do not establish a winning "
-                    "model; shipping remains ungraded."
+                    "model; shipping remains ungraded. A model router may "
+                    "select a different model for each request."
                 ),
             )
         elif topic_id == "06":
@@ -343,19 +343,19 @@ def run_demo(
             check = catalog_check(answer, "SKU-BACKPACK")
             result.update(
                 question="Two turns: remember the backpack, then answer its price.",
-                expected="The second answer refers to the backpack and INR 800.",
+                expected="The second answer reports the backpack price, INR 800.",
                 output={"turn_1": reply, "turn_2": answer},
                 checks=[check],
                 status="needs_review"
                 if check["status"] == "review"
                 else check["status"],
                 explanation=(
-                    "The second request uses 'it'; conversation history "
-                    "supplies the product."
+                    "The second request uses 'it'; the price check compares "
+                    "the answer with the backpack price."
                 ),
                 limitation=(
-                    "One two-turn case does not establish general "
-                    "conversational memory."
+                    "A price match alone does not prove how the reference was "
+                    "resolved or establish general conversational memory."
                 ),
             )
         elif topic_id == "07":
@@ -543,6 +543,12 @@ def run_demo(
                 raise ValueError("Cancellation skill was not selected")
             execution = run_agent(runtime, skill=positive)
             cancelled = execution["final_order"]["status"] == "cancelled"
+            skill_in_prompt = any(
+                positive["body"] in m["content"]
+                for e in runtime.events
+                if e["kind"] == "model"
+                for m in e["messages"]
+            )
             result.update(
                 question="Please cancel my order DS-1001",
                 output={
@@ -551,21 +557,18 @@ def run_demo(
                     "execution": execution,
                 },
                 expected=(
-                    "Load the actual SKILL.md for cancellation, use its instructions, "
-                    "and cancel the owned unshipped sandbox order. "
+                    "Load the cancellation SKILL.md into the prompt and cancel "
+                    "the owned unshipped sandbox order. "
                     "Price requests load nothing."
                 ),
-                status="pass" if cancelled and negative is None else "fail",
+                status="pass"
+                if cancelled and negative is None and skill_in_prompt
+                else "fail",
                 checks=[
                     {
                         "trigger": True,
                         "false_trigger": negative is not None,
-                        "skill_body_in_prompt": any(
-                            positive["body"] in m["content"]
-                            for e in runtime.events
-                            if e["kind"] == "model"
-                            for m in e["messages"]
-                        ),
+                        "skill_body_in_prompt": skill_in_prompt,
                         "final_state_success": cancelled,
                     }
                 ],
@@ -575,8 +578,8 @@ def run_demo(
                     "and verifies actual tool state."
                 ),
                 limitation=(
-                    "An application skill with a small loader and keyword routing. "
-                    "It is not a universal skill runner or a Codex developer skill."
+                    "This checks prompt inclusion and final state, not every "
+                    "instruction or the complete tool trajectory."
                 ),
             )
         elif topic_id == "11":
@@ -693,8 +696,8 @@ def run_demo(
             result.update(
                 output={"answer": answer, "observed_usage": measured},
                 expected=(
-                    "Show actual call latency and token counts, with "
-                    "unmeasured cost explicit."
+                    "Show actual call latency and token counts; distinguish "
+                    "reported cost from missing measurements."
                 ),
                 status="needs_review"
                 if measured["missing_token_measurements"]

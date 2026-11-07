@@ -101,7 +101,8 @@ QUICK_GUIDES = {
         ),
         "status": (
             "PASS/FAIL applies to a recognized price; NEEDS REVIEW means the "
-            "answer wording could not be safely parsed."
+            "answer wording could not be safely parsed. A price match alone "
+            "does not prove the reference was resolved."
         ),
         "example": (
             "Turn 1 mentions the Backpack; turn 2 asks `How much does it "
@@ -278,6 +279,52 @@ QUICK_GUIDES = {
     },
 }
 
+EXPECTED_BEHAVIOR = {
+    "01": "The answer matches the expected backpack price wording, INR 800.",
+    "02": "The answer gives the backpack price, INR 800.",
+    "03": "A person reviews the notebook answer against its INR 100 price.",
+    "04": "The answer admits the international shipping policy is missing.",
+    "05": "Compare both model selections on the same three shop questions.",
+    "06": "The second answer gives the backpack price, INR 800.",
+    "07": "Retrieve the cancellation policy and reference it in the answer.",
+    "08": "Look up SKU-NOTEBOOK and return the catalog price, INR 100.",
+    "09": "The MCP lookup matches the catalog and rejects malformed arguments.",
+    "10": "Load the cancellation skill and cancel the eligible sandbox order.",
+    "11": "The owned unshipped order DS-1001 becomes cancelled.",
+    "12": "Compare both agent variants on fresh copies of the same order.",
+    "13": "Block access to another customer's order while allowing own access.",
+    "14": "Three of five authored answers pass; calculate the illustrative interval.",
+    "15": "Show the provider's available usage and latency measurements.",
+    "16": "The baseline passes and the deliberately wrong price is caught.",
+}
+
+
+def expected_for_display(result: demos.DemoResult) -> str:
+    """Keep the intended check visible even when a run fails before grading."""
+    if result.expected == "Inspect the stated check.":
+        return EXPECTED_BEHAVIOR[result.topic_id]
+    return result.expected
+
+
+def execution_guidance(error: str) -> str:
+    """Explain common provider failures without treating them as eval failures."""
+    message = error.lower()
+    if "api_key" in message or "key is not set" in message:
+        return "Add your OpenRouter key to .env and restart the lab."
+    if "http error 429" in message:
+        return "The provider is limiting requests. Wait and try again."
+    if "http error 404" in message:
+        return "Check the model ID and choose a model available to your account."
+    if "http error 400" in message:
+        return (
+            "Try a model that supports the structured output or tools this demo uses."
+        )
+    if "empty answer" in message or "truncated" in message:
+        return "The model did not return a usable answer. Try another compatible model."
+    if "request failed" in message or "timeout" in message:
+        return "Check that the selected provider is reachable, then try again."
+    return "Review the error above and your provider settings before trying again."
+
 
 def code_excerpt(topic_id: str) -> str:
     source = inspect.getsource(demos.run_demo)
@@ -299,7 +346,7 @@ def show_output(st, result: demos.DemoResult) -> None:
     topic = result.topic_id
     st.subheader("What happened")
     if result.status == "execution_error":
-        st.write(output)
+        st.write("Error:", output.get("error", "The demo could not complete."))
     elif isinstance(output, str):
         st.write(output)
     elif topic == "04":
@@ -307,14 +354,15 @@ def show_output(st, result: demos.DemoResult) -> None:
         st.write("Judge:", output["judge"]["verdict"], "—", output["judge"]["reason"])
         if result.provenance.get("judge_is_subject_model"):
             st.caption(
-                "The same model generated and judged this answer. This is "
-                "not independent validation."
+                "The same model selection was used for the answer and judge. "
+                "This is not independent validation."
             )
     elif topic == "05":
         st.dataframe(
             [
                 {
-                    "Model": row["model"],
+                    "Model selection": row["model"],
+                    "Reported model": row.get("reported_model", "Unknown"),
                     "Question": row["question"],
                     "Answer": row["answer"],
                     "Catalog check": row["check"]["status"],
@@ -336,16 +384,16 @@ def show_output(st, result: demos.DemoResult) -> None:
         st.write("Actual tool result:", output["actual_tool_result"])
         st.write("Final answer:", output.get("final_answer"))
         st.caption(
-            "Native Ollama tool_calls response followed by a tool-role result."
+            "Native tool_calls response followed by a tool-role result."
             if "native_message" in output
             else "Historical structured-action example; this run predates native tools."
         )
     elif topic == "09":
         st.write("Connected to the local MCP server over stdio.")
         st.write("Discovered tools:", ", ".join(output["tools"]))
+        st.write("Lookup result:", output["response"])
         st.write(
-            "Product lookup returned the catalog record; malformed "
-            "arguments were rejected."
+            "Malformed arguments rejected:", output["invalid_arguments"]["is_error"]
         )
     elif topic == "10":
         st.write(
@@ -380,10 +428,20 @@ def show_output(st, result: demos.DemoResult) -> None:
         )
         st.write("Role handoff:", output["two_roles"]["handoff"])
     elif topic == "13":
-        st.write(output["cross_customer_read"]["error"])
-        st.write(output["cross_customer_cancel"]["error"])
         st.write(
-            "Your own order remains accessible. Order state unchanged:",
+            "Cross-customer read:",
+            output["cross_customer_read"].get("error", "Unexpectedly allowed"),
+        )
+        st.write(
+            "Cross-customer cancellation:",
+            output["cross_customer_cancel"].get("error", "Unexpectedly allowed"),
+        )
+        st.write(
+            "Your own order accessible:",
+            output["legitimate_read"].get("customer_id") == "C001",
+        )
+        st.write(
+            "Order state unchanged:",
             output["state_unchanged"],
         )
     elif topic == "14":
@@ -524,7 +582,10 @@ def render() -> None:
         "controlled": "CONTROLLED LOCAL EXAMPLE",
         "replay": "RECORDED REPLAY — NO NEW MODEL CALL",
     }
-    st.caption(evidence_label[result.evidence_kind])
+    if result.status == "execution_error" and result.evidence_kind != "replay":
+        st.caption("EXECUTION ERROR — NO COMPLETED DEMO")
+    else:
+        st.caption(evidence_label[result.evidence_kind])
     facts_column, output_column = st.columns([1, 2])
     with facts_column:
         st.subheader("Shop facts")
@@ -542,9 +603,12 @@ def render() -> None:
             "Returns: 14 days after delivery. Cancellation: before "
             "shipment only. Own orders only."
         )
-        st.write("Expected:", result.expected)
     with output_column:
+        st.write("Input / task:", result.question)
+        st.write("Expected behavior:", expected_for_display(result))
+        st.caption("Actual behavior")
         show_output(st, result)
+        st.write("Check:", guide["tests"])
         display_status = result.status.replace("_", " ").upper()
         method = (
             st.success
@@ -554,6 +618,9 @@ def render() -> None:
             else st.warning
         )
         method(display_status + " — " + result.explanation)
+        if result.status == "execution_error":
+            st.caption("The check could not finish, so no pass or fail was determined.")
+            st.caption(execution_guidance(result.output.get("error", "")))
         st.caption(result.limitation)
     if topic_id in {"03", "04"} and result.status != "execution_error":
         st.subheader("Your assessment")
