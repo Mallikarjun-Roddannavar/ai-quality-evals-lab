@@ -1,0 +1,6 @@
+{
+  "case_id": "price",
+  "question": "How much does the backpack cost?",
+  "product_id": "SKU-BACKPACK",
+  "controlled_answer": "The backpack costs 800 INR."
+}

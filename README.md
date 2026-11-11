@@ -103,12 +103,30 @@ The shop and its orders are fictional. Results apply to the stated check; a
 model judge can be wrong. See the [Intro guide](intro/README.md) for all topics,
 result interpretation, and replay.
 
+## Go further with Advanced
+
+The [Advanced guide](advanced/README.md) moves from the browser demonstrations
+to Python experiments, model and human review, framework comparisons, and local
+Phoenix traces. It explains which checks use DeepEval, Ragas, Inspect AI,
+LangChain, LangGraph, and Python, and what each result can and cannot tell you.
+
+Install the Advanced dependencies and start with an offline Foundations run:
+
+```powershell
+uv sync --locked --extra dev --extra advanced
+uv run --extra advanced evals suite foundations --mode offline
+```
+
+The guide also covers OpenRouter, local tracing and commands for individual
+topics. Some live workflows still need further verification; model responses and
+free endpoint availability can vary. Use fictional DemoShop data in the traces.
+
 ## Offline checks
 
 ```powershell
-uv run --locked --offline pytest
-uv run --locked --offline ruff check .
-uv run --locked --offline ruff format --check .
+uv run --locked --offline --extra dev --extra advanced pytest
+uv run --locked --offline --extra dev --extra advanced ruff check .
+uv run --locked --offline --extra dev --extra advanced ruff format --check .
 uv run lab --check
 uv run lab --check --broken
 ```

@@ -1,0 +1,410 @@
+{
+  "version": "1.0.0",
+  "label_source": "authored domain expectations; human review empty",
+  "cases": [
+    {
+      "id": "app-01",
+      "mode": "chat",
+      "turns": [
+        "What is the notebook price? Include INR."
+      ],
+      "actor": "C001",
+      "expectation": {
+        "kind": "price",
+        "product_id": "SKU-NOTEBOOK"
+      },
+      "split": "development"
+    },
+    {
+      "id": "app-02",
+      "mode": "chat",
+      "turns": [
+        "What is the water bottle price? Include INR."
+      ],
+      "actor": "C001",
+      "expectation": {
+        "kind": "price",
+        "product_id": "SKU-BOTTLE"
+      },
+      "split": "development"
+    },
+    {
+      "id": "app-03",
+      "mode": "chat",
+      "turns": [
+        "What is the backpack price? Include INR."
+      ],
+      "actor": "C001",
+      "expectation": {
+        "kind": "price",
+        "product_id": "SKU-BACKPACK"
+      },
+      "split": "development"
+    },
+    {
+      "id": "app-04",
+      "mode": "chat",
+      "turns": [
+        "Is the notebook in stock?"
+      ],
+      "actor": "C001",
+      "expectation": {
+        "kind": "availability",
+        "product_id": "SKU-NOTEBOOK"
+      },
+      "split": "development"
+    },
+    {
+      "id": "app-05",
+      "mode": "chat",
+      "turns": [
+        "Is the water bottle in stock?"
+      ],
+      "actor": "C001",
+      "expectation": {
+        "kind": "availability",
+        "product_id": "SKU-BOTTLE"
+      },
+      "split": "development"
+    },
+    {
+      "id": "app-06",
+      "mode": "chat",
+      "turns": [
+        "Is the backpack in stock?"
+      ],
+      "actor": "C001",
+      "expectation": {
+        "kind": "availability",
+        "product_id": "SKU-BACKPACK"
+      },
+      "split": "development"
+    },
+    {
+      "id": "app-07",
+      "mode": "chat",
+      "turns": [
+        "I am interested in the backpack.",
+        "What does it cost? Include INR."
+      ],
+      "actor": "C001",
+      "expectation": {
+        "kind": "price",
+        "product_id": "SKU-BACKPACK"
+      },
+      "split": "development"
+    },
+    {
+      "id": "app-08",
+      "mode": "chat",
+      "turns": [
+        "I am interested in the notebook.",
+        "What does it cost? Include INR."
+      ],
+      "actor": "C001",
+      "expectation": {
+        "kind": "price",
+        "product_id": "SKU-NOTEBOOK"
+      },
+      "split": "development"
+    },
+    {
+      "id": "app-09",
+      "mode": "chat",
+      "turns": [
+        "Can I cancel a shipped order?"
+      ],
+      "actor": "C001",
+      "expectation": {
+        "kind": "human_review",
+        "rubric": "Check source support, abstention and missing-ID clarification."
+      },
+      "split": "held_out"
+    },
+    {
+      "id": "app-10",
+      "mode": "chat",
+      "turns": [
+        "How long is the return window?"
+      ],
+      "actor": "C001",
+      "expectation": {
+        "kind": "human_review",
+        "rubric": "Check source support, abstention and missing-ID clarification."
+      },
+      "split": "held_out"
+    },
+    {
+      "id": "app-11",
+      "mode": "chat",
+      "turns": [
+        "Do you ship internationally?"
+      ],
+      "actor": "C001",
+      "expectation": {
+        "kind": "human_review",
+        "rubric": "Check source support, abstention and missing-ID clarification."
+      },
+      "split": "held_out"
+    },
+    {
+      "id": "app-12",
+      "mode": "chat",
+      "turns": [
+        "What is my order status?"
+      ],
+      "actor": "C001",
+      "expectation": {
+        "kind": "human_review",
+        "rubric": "Check source support, abstention and missing-ID clarification."
+      },
+      "split": "held_out"
+    },
+    {
+      "id": "app-13",
+      "mode": "rag",
+      "turns": [
+        "What is the backpack price?"
+      ],
+      "actor": "C001",
+      "expectation": {
+        "kind": "retrieval",
+        "relevant_doc": "catalog"
+      },
+      "split": "development"
+    },
+    {
+      "id": "app-14",
+      "mode": "rag",
+      "turns": [
+        "How many days are returns allowed?"
+      ],
+      "actor": "C001",
+      "expectation": {
+        "kind": "retrieval",
+        "relevant_doc": "returns"
+      },
+      "split": "development"
+    },
+    {
+      "id": "app-15",
+      "mode": "rag",
+      "turns": [
+        "Can I cancel after shipment?"
+      ],
+      "actor": "C001",
+      "expectation": {
+        "kind": "retrieval",
+        "relevant_doc": "cancellation"
+      },
+      "split": "development"
+    },
+    {
+      "id": "app-16",
+      "mode": "rag",
+      "turns": [
+        "Do you ship internationally?"
+      ],
+      "actor": "C001",
+      "expectation": {
+        "kind": "retrieval",
+        "relevant_doc": null
+      },
+      "split": "development"
+    },
+    {
+      "id": "app-17",
+      "mode": "rag",
+      "turns": [
+        "What clock is used for returns?"
+      ],
+      "actor": "C001",
+      "expectation": {
+        "kind": "retrieval",
+        "relevant_doc": "returns"
+      },
+      "split": "held_out"
+    },
+    {
+      "id": "app-18",
+      "mode": "rag",
+      "turns": [
+        "Is the bottle in stock?"
+      ],
+      "actor": "C001",
+      "expectation": {
+        "kind": "retrieval",
+        "relevant_doc": "catalog"
+      },
+      "split": "held_out"
+    },
+    {
+      "id": "app-19",
+      "mode": "single",
+      "turns": [
+        "Cancel DS-1001"
+      ],
+      "actor": "C001",
+      "expectation": {
+        "kind": "state",
+        "order_id": "DS-1001",
+        "status": "cancelled"
+      },
+      "split": "development"
+    },
+    {
+      "id": "app-20",
+      "mode": "single",
+      "turns": [
+        "Cancel DS-1002"
+      ],
+      "actor": "C001",
+      "expectation": {
+        "kind": "state",
+        "order_id": "DS-1002",
+        "status": "shipped"
+      },
+      "split": "development"
+    },
+    {
+      "id": "app-21",
+      "mode": "single",
+      "turns": [
+        "Cancel DS-1003"
+      ],
+      "actor": "C001",
+      "expectation": {
+        "kind": "state",
+        "order_id": "DS-1003",
+        "status": "delivered"
+      },
+      "split": "development"
+    },
+    {
+      "id": "app-22",
+      "mode": "single",
+      "turns": [
+        "Cancel my order"
+      ],
+      "actor": "C001",
+      "expectation": {
+        "kind": "state",
+        "order_id": null,
+        "status": null
+      },
+      "split": "development"
+    },
+    {
+      "id": "app-23",
+      "mode": "single",
+      "turns": [
+        "Return DS-1003"
+      ],
+      "actor": "C002",
+      "expectation": {
+        "kind": "state",
+        "order_id": "DS-1003",
+        "status": "return requested"
+      },
+      "split": "development"
+    },
+    {
+      "id": "app-24",
+      "mode": "single",
+      "turns": [
+        "Return DS-1003"
+      ],
+      "actor": "C001",
+      "expectation": {
+        "kind": "state",
+        "order_id": "DS-1003",
+        "status": "delivered"
+      },
+      "split": "held_out"
+    },
+    {
+      "id": "app-25",
+      "mode": "single",
+      "turns": [
+        "Do not cancel DS-1001. Tell me its status."
+      ],
+      "actor": "C001",
+      "expectation": {
+        "kind": "state",
+        "order_id": "DS-1001",
+        "status": "awaiting shipment"
+      },
+      "split": "held_out"
+    },
+    {
+      "id": "app-26",
+      "mode": "single",
+      "turns": [
+        "Cancel DS-9999"
+      ],
+      "actor": "C001",
+      "expectation": {
+        "kind": "state",
+        "order_id": null,
+        "status": null
+      },
+      "split": "held_out"
+    },
+    {
+      "id": "app-27",
+      "mode": "multi",
+      "turns": [
+        "Cancel DS-1001"
+      ],
+      "actor": "C001",
+      "expectation": {
+        "kind": "state",
+        "order_id": "DS-1001",
+        "status": "cancelled"
+      },
+      "split": "development"
+    },
+    {
+      "id": "app-28",
+      "mode": "multi",
+      "turns": [
+        "Cancel DS-1002"
+      ],
+      "actor": "C001",
+      "expectation": {
+        "kind": "state",
+        "order_id": "DS-1002",
+        "status": "shipped"
+      },
+      "split": "development"
+    },
+    {
+      "id": "app-29",
+      "mode": "multi",
+      "turns": [
+        "Cancel DS-1003"
+      ],
+      "actor": "C001",
+      "expectation": {
+        "kind": "state",
+        "order_id": "DS-1003",
+        "status": "delivered"
+      },
+      "split": "development"
+    },
+    {
+      "id": "app-30",
+      "mode": "multi",
+      "turns": [
+        "Return DS-1003"
+      ],
+      "actor": "C002",
+      "expectation": {
+        "kind": "state",
+        "order_id": "DS-1003",
+        "status": "return requested"
+      },
+      "split": "held_out"
+    }
+  ]
+}

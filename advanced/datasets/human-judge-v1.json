@@ -1,0 +1,10 @@
+{
+  "version": "1.0.0",
+  "cases": [
+    {"id": "price-notebook", "question": "How much does the notebook cost?"},
+    {"id": "stock-bottle", "question": "Is the water bottle in stock?"},
+    {"id": "price-backpack", "question": "How much does the backpack cost?"},
+    {"id": "return-window", "question": "How long after delivery can I return an item?"},
+    {"id": "shipping-unknown", "question": "Do you ship internationally?"}
+  ]
+}

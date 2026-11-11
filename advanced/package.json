@@ -1,0 +1,7 @@
+{
+  "name": "demoshop-advanced-evaluation",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local promptfoo security comparisons; no hosted inference",
+  "devDependencies": {"promptfoo": "0.125.1"}
+}

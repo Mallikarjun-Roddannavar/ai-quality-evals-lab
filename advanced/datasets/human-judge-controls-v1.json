@@ -1,0 +1,11 @@
+{
+  "version": "1.0.0",
+  "controls": [
+    {
+      "case_id": "control-notebook-wrong-price",
+      "question": "How much does the notebook cost?",
+      "answer": "The notebook costs 900 INR.",
+      "expected_judge_label": "incorrect"
+    }
+  ]
+}

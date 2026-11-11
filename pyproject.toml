@@ -12,24 +12,32 @@ dependencies = ["pydantic==2.13.4", "streamlit==1.66.1", "mcp==2.3.0"]
 
 [project.scripts]
 lab = "ai_quality_evals.lab:main"
+evals = "ai_quality_evals_advanced.cli:main"
 
 [project.optional-dependencies]
 dev = ["pytest==9.1.1", "ruff==0.14.2"]
+advanced = [
+    "deepeval==4.3.2", "ragas==0.4.3", "inspect-ai==0.3.286",
+    "langchain==1.4.7", "langchain-ollama==1.1.0",
+    "langchain-community==0.3.31", "langgraph==1.2.18",
+    "opentelemetry-sdk==1.45.1", "opentelemetry-exporter-otlp-proto-http==1.45.1",
+    "arize-phoenix==20.19.0",
+]
 
 [tool.setuptools.packages.find]
-where = ["intro/src"]
+where = ["intro/src", "advanced/src"]
 include = ["ai_quality_evals*"]
 namespaces = false
 
 [tool.pytest.ini_options]
-testpaths = ["intro/tests"]
+testpaths = ["intro/tests", "advanced/tests"]
 addopts = "-ra"
 
 [tool.ruff]
 target-version = "py314"
 line-length = 88
-src = ["intro/src"]
-extend-exclude = [".cache", ".venv", "advanced"]
+src = ["intro/src", "advanced/src"]
+extend-exclude = [".cache", ".venv"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP"]

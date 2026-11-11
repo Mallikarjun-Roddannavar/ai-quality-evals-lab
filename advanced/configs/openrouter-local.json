@@ -1,0 +1,11 @@
+{
+  "provider": "openrouter",
+  "model": "liquid/lfm-2.5-2.6b:free",
+  "max_tokens": 1024,
+  "max_model_calls": 20,
+  "deadline_seconds": 300.0,
+  "request_timeout": 60.0,
+  "ollama_url": "http://127.0.0.1:11434",
+  "phoenix_endpoint": "http://127.0.0.1:6006/v1/traces",
+  "export_traces": true
+}

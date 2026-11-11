@@ -41,6 +41,8 @@ traces/
 *.bak
 .ipynb_checkpoints/
 .cache/
+.uv-cache/
+_git/
 node_modules/
 tmp/
 temp/
@@ -51,8 +53,8 @@ temp/
 .DS_Store
 Thumbs.db
 
-# Deferred from the Intro-only snapshot; keep these local for later review
-advanced/
+# Deferred learning materials
+advanced/blog.md
 intro/notes/
 intro/blog.md
 intro/assets/

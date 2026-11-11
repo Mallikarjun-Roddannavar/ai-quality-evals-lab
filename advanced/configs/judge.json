@@ -1,0 +1,9 @@
+{
+  "provider": "ollama",
+  "model": "gemma4:e2b",
+  "max_model_calls": 20,
+  "deadline_seconds": 300.0,
+  "request_timeout": 60.0,
+  "max_tokens": 512,
+  "export_traces": true
+}

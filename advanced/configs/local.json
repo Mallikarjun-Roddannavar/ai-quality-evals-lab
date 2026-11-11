@@ -1,0 +1,7 @@
+{
+  "provider": "ollama",
+  "model": "gemma4:e2b",
+  "ollama_url": "http://127.0.0.1:11434",
+  "phoenix_endpoint": "http://127.0.0.1:6006/v1/traces",
+  "export_traces": true
+}

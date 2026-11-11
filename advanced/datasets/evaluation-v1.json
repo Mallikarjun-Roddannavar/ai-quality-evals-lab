@@ -1,0 +1,277 @@
+{
+  "id": "demoshop-evaluation",
+  "version": "1.0.0",
+  "label_source": "authored controls; not independent human annotation",
+  "cases": [
+    {
+      "id": "ds01",
+      "request": "What is the notebook price? Answer INR followed by its price.",
+      "reference": "INR 100",
+      "answer": "INR 100",
+      "label": true,
+      "category": "foundations",
+      "split": "development"
+    },
+    {
+      "id": "ds02",
+      "request": "What is the backpack price? Answer INR followed by its price.",
+      "reference": "INR 800",
+      "answer": "INR 800",
+      "label": true,
+      "category": "foundations",
+      "split": "development"
+    },
+    {
+      "id": "ds03",
+      "request": "Is the water bottle available? Answer in stock or out of stock.",
+      "reference": "out of stock",
+      "answer": "out of stock",
+      "label": true,
+      "category": "foundations",
+      "split": "development"
+    },
+    {
+      "id": "ds04",
+      "request": "How many notebooks are in stock? Answer with digits.",
+      "reference": "10",
+      "answer": "10",
+      "label": true,
+      "category": "foundations",
+      "split": "development"
+    },
+    {
+      "id": "ds05",
+      "request": "How long after delivery are returns allowed? Answer number and days.",
+      "reference": "14 days",
+      "answer": "14 days",
+      "label": true,
+      "category": "foundations",
+      "split": "development"
+    },
+    {
+      "id": "ds06",
+      "request": "When is cancellation allowed? Answer before shipment.",
+      "reference": "before shipment",
+      "answer": "before shipment",
+      "label": true,
+      "category": "foundations",
+      "split": "development"
+    },
+    {
+      "id": "ds07",
+      "request": "For customer C001, give the status of their order DS-1002.",
+      "reference": "shipped",
+      "answer": "shipped",
+      "label": true,
+      "category": "foundations",
+      "split": "development"
+    },
+    {
+      "id": "ds08",
+      "request": "Can C001 cancel shipped order DS-1002? Answer allowed or not allowed.",
+      "reference": "not allowed",
+      "answer": "not allowed",
+      "label": true,
+      "category": "foundations",
+      "split": "development"
+    },
+    {
+      "id": "ds09",
+      "request": "Give the notebook price as INR and amount; letter case is irrelevant.",
+      "reference": "INR 100",
+      "answer": "inr 100",
+      "label": true,
+      "category": "foundations",
+      "split": "development"
+    },
+    {
+      "id": "ds10",
+      "request": "Give water bottle availability; surrounding whitespace is irrelevant.",
+      "reference": "out of stock",
+      "answer": " out of stock ",
+      "label": true,
+      "category": "foundations",
+      "split": "development"
+    },
+    {
+      "id": "ds11",
+      "request": "Give the return window as number and days; whitespace width is irrelevant.",
+      "reference": "14 days",
+      "answer": "14   days",
+      "label": true,
+      "category": "foundations",
+      "split": "development"
+    },
+    {
+      "id": "ds12",
+      "request": "Describe unshipped order DS-1001 as awaiting shipment; any whitespace separator is allowed.",
+      "reference": "awaiting shipment",
+      "answer": "awaiting\tshipment",
+      "label": true,
+      "category": "foundations",
+      "split": "development"
+    },
+    {
+      "id": "ds13",
+      "request": "When is cancellation allowed? Any whitespace separator is allowed.",
+      "reference": "before shipment",
+      "answer": "before\nshipment",
+      "label": true,
+      "category": "foundations",
+      "split": "development"
+    },
+    {
+      "id": "ds14",
+      "request": "Return the case-sensitive order identifier DS-1001 exactly.",
+      "reference": "DS-1001",
+      "answer": "ds-1001",
+      "label": false,
+      "category": "foundations",
+      "split": "development"
+    },
+    {
+      "id": "ds15",
+      "request": "For machine consumption return shipped order DS-1002 status exactly as the lowercase token shipped.",
+      "reference": "shipped",
+      "answer": "SHIPPED",
+      "label": false,
+      "category": "foundations",
+      "split": "development"
+    },
+    {
+      "id": "ds16",
+      "request": "What is the notebook price? Equivalent currency wording is acceptable.",
+      "reference": "INR 100",
+      "answer": "100 rupees",
+      "label": true,
+      "category": "foundations",
+      "split": "development"
+    },
+    {
+      "id": "ds17",
+      "request": "Is the water bottle available? Unavailable and out of stock are both acceptable.",
+      "reference": "out of stock",
+      "answer": "unavailable",
+      "label": true,
+      "category": "foundations",
+      "split": "held_out"
+    },
+    {
+      "id": "ds18",
+      "request": "Explain the return window after delivery; a full sentence is acceptable.",
+      "reference": "14 days",
+      "answer": "You can return it within 14 days of delivery.",
+      "label": true,
+      "category": "foundations",
+      "split": "held_out"
+    },
+    {
+      "id": "ds19",
+      "request": "Where is my order? No order identifier has been provided; ask for it.",
+      "reference": "Please provide your order ID.",
+      "answer": "Which order do you mean?",
+      "label": true,
+      "category": "foundations",
+      "split": "held_out"
+    },
+    {
+      "id": "ds20",
+      "request": "Give the notebook price as INR and amount.",
+      "reference": "INR 100",
+      "answer": "INR 150",
+      "label": false,
+      "category": "foundations",
+      "split": "held_out"
+    },
+    {
+      "id": "ds21",
+      "request": "Is the water bottle in stock?",
+      "reference": "out of stock",
+      "answer": "in stock",
+      "label": false,
+      "category": "foundations",
+      "split": "held_out"
+    },
+    {
+      "id": "ds22",
+      "request": "How long after delivery are returns allowed?",
+      "reference": "14 days",
+      "answer": "30 days",
+      "label": false,
+      "category": "foundations",
+      "split": "held_out"
+    },
+    {
+      "id": "ds23",
+      "request": "Can C001 cancel shipped order DS-1002? Answer allowed or not allowed.",
+      "reference": "not allowed",
+      "answer": "allowed",
+      "label": false,
+      "category": "foundations",
+      "split": "held_out"
+    },
+    {
+      "id": "ds24",
+      "request": "For customer C001 give the status of their order DS-1002.",
+      "reference": "shipped",
+      "answer": "",
+      "label": false,
+      "category": "foundations",
+      "split": "held_out"
+    },
+    {
+      "id": "a25",
+      "request": "What is the backpack price?",
+      "reference": "800 INR",
+      "answer": "900 INR",
+      "label": false,
+      "category": "price",
+      "split": "development"
+    },
+    {
+      "id": "a26",
+      "request": "What is the notebook price?",
+      "reference": "100 INR",
+      "answer": "The notebook costs 100 INR.",
+      "label": true,
+      "category": "price",
+      "split": "development"
+    },
+    {
+      "id": "a27",
+      "request": "Can I cancel a shipped order?",
+      "reference": "No",
+      "answer": "Yes",
+      "label": false,
+      "category": "policy",
+      "split": "development"
+    },
+    {
+      "id": "a28",
+      "request": "Are returns allowed after 14 elapsed days?",
+      "reference": "No",
+      "answer": "No",
+      "label": true,
+      "category": "policy",
+      "split": "development"
+    },
+    {
+      "id": "a29",
+      "request": "What is the water bottle price?",
+      "reference": "300 INR",
+      "answer": "300 INR",
+      "label": true,
+      "category": "price",
+      "split": "held_out"
+    },
+    {
+      "id": "a30",
+      "request": "What is the backpack price?",
+      "reference": "800 INR",
+      "answer": "I cannot determine that.",
+      "label": false,
+      "category": "abstention",
+      "split": "held_out"
+    }
+  ]
+}
